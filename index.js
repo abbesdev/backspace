@@ -56,7 +56,7 @@ mongoose
 
 // initial route
 app.get("/", (req, res) => {
-  res.json({ message: "School space backend initial route..." });
+  res.json({ message: "School space backend initial ..." });
 });
 
 app.use(userRouter);
