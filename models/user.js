@@ -12,6 +12,10 @@ const userSchema = new Schema({
   registrationCode: String,
   dateOfBirth: Date,
   userRole: String, // discriminator key value
+  verified: {
+    type: Boolean,
+    default: false
+  }
 
 },
   {
@@ -24,7 +28,10 @@ const userSchema = new Schema({
 
 // Create teacher schema that inherits from user schema
 const teacherSchema = new Schema({
-  subject: String,
+  subject: {
+    type: Schema.Types.ObjectId,
+    ref: 'Subject'
+  },
 
 });
 

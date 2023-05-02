@@ -15,7 +15,8 @@ const examRouter = require('./routes/exam.js');
 const classRouter = require('./routes/class.js');
 const quizRouter = require('./routes/quiz.js');
 const questionRouter = require('./routes/question.js');
-
+const subjectRouter = require('./routes/subject.js');
+const timetableRouter = require('./routes/timetable.js');
 
 
 
@@ -67,3 +68,5 @@ app.use(examRouter);
 app.use(classRouter);
 app.use(quizRouter);
 app.use(questionRouter);
+app.use(subjectRouter);
+app.use(timetableRouter);
