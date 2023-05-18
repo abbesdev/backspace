@@ -6,8 +6,9 @@ const Class = require('../models/class')
 // CREATE - Create a new timetable entry
 exports.createTimetable = async (req, res) => {
   try {
-    const { classId, startDate, endDate, startTime, duration, subjectId } = req.body;
-
+    console.log(req.body);
+    const { classId, startDate, endDate,  timeDuration, subjectId } = req.body;
+console.log(classId);
     // Check if the provided classId and subjectId exist
     const foundClass = await Class.findById(classId);
     if (!foundClass) {
@@ -23,14 +24,16 @@ exports.createTimetable = async (req, res) => {
       class: classId,
       startDate,
       endDate,
-      startTime,
-      duration,
+     // startTime,
+     timeDuration,
       subject: subjectId
     });
     await newTimetable.save();
     res.status(201).send(newTimetable);
   } catch (error) {
     res.status(400).send(error);
+    //print(error);
+    console.log(error);
   }
 };
 
@@ -43,6 +46,27 @@ exports.getTimetables = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+// get timetables with classname and subject name 
+exports.getTimetables2 = async (req, res) => {
+  try {
+    const timetables = await Timetable.find({}).populate('class', 'name').populate('subject', 'name');
+    const results = timetables.map(t => {
+      return {
+        startDate: t.startDate,
+        endDate: t.endDate,
+        timeDuration: t.timeDuration,
+        classes: t.class.name,
+        subject: t.subject.name
+      };
+    });
+    res.send(results);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+
 
 // READ - Get a specific timetable entry by ID
 exports.getTimetableById = async (req, res) => {

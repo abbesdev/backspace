@@ -13,6 +13,8 @@ router.delete('/quiz/:id', quizController.deleteQuiz);
 router.post('/quiz/:quizId/:studentId', quizController.createQuizSubmission);
 router.get('/quiz/:quizId', quizController.getQuizSubmissionsByQuiz);
 
-router.get('/quiz/:studentId', quizController.getQuizSubmissionsByStudent);
+router.get('/quizbystudent/:studentId', quizController.getQuizSubmissionsByStudent);
+
+router.get('/questionsbyquiz/:quizId', quizController.getQuestionsByQuiz);
 
 module.exports = router;

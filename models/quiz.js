@@ -25,15 +25,15 @@ const quizSchema = new mongoose.Schema({
       required: true,
     },
     answers: [{
-      question: {
+      /*question: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Question',
         required: true,
-      },
-      answer: [{
+      },*/
+   //   answer: [{
         type: String,
         required: true,
-      }],
+     // }],
     }],
     grade: {
       type: Number,

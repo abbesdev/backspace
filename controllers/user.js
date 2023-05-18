@@ -4,7 +4,7 @@ const {Student} = require("../models/user");
 const {Parent} = require("../models/user");
 const {Admin} = require("../models/user");
 const nodemailer = require("nodemailer");
-
+const Class = require("../models/class");
 const createUser = async (req, res) => {
   try {
     let user;
@@ -87,6 +87,7 @@ const getAllStudents = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
 
 const getUserById = async (req, res) => {
   try {
@@ -203,8 +204,30 @@ const updateUserverfication = async (req, res) => {
   }
 };
 
+const getStudentById = async (req, res) => {
+  try {
+    const student = await User.findById(req.params.id);
+    const id = student.class;
+    const foundClass = await Class.findById(id);
+    // return user name and class only
+    const user = {
+      name: student.firstName + " " + student.lastName,
+      classname: foundClass.name,
+      profilePhoto: student.profilePhoto
+    }
+
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  }
+  catch (err) {
+  }
+}
+
 
 module.exports = {
+  getStudentById,
   getAllUsers,
   getAllStudents,
   updateStudent,

@@ -18,5 +18,5 @@ router.put('/users/parent/:id', userController.updateParent);
 
 router.delete('/users/:id', userController.deleteUser);
 
-
+router.get('/students/:id', userController.getStudentById);
 module.exports = router;
