@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   firstName: String,
   lastName: String,
+  otp: String,
   phoneNumber: String,
   profilePhoto: String,
   email: String,
@@ -30,23 +31,27 @@ const userSchema = new Schema({
 const teacherSchema = new Schema({
   subject: {
     type: Schema.Types.ObjectId,
-    ref: 'Subject'
+    ref: 'Subject',
+    default: "6458f81487f6465601a9bae0"
   },
 
 });
 
 // Create student schema that inherits from user schema
 const studentSchema = new Schema({
-  identifiant: String,
+  identifiant: {type :String,
+  default: "6458f81487f6465601a9bae0"},
   class: {
     type: Schema.Types.ObjectId,
-    ref: 'Class'
+    ref: 'Class',
+    default: "6458f81487f6465601a9bae0"
   },
 });
 
 // Create parent schema that inherits from user schema
 const parentSchema = new Schema({
-  child: [{ type: Schema.Types.ObjectId, ref: 'Student' }],
+  child: [{ type: Schema.Types.ObjectId, ref: 'Student',
+  default: "6458f81487f6465601a9bae0" }],
 });
 
 // Create admin schema that inherits from user schema

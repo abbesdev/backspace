@@ -1,4 +1,5 @@
 const Quiz = require('../models/quiz');
+const Question = require('../models/question');
 
 // CREATE - Create a new quiz
 exports.createQuiz = async (req, res) => {
@@ -20,6 +21,19 @@ exports.getQuizzes = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+//GET ALL QUIZZES FOR A SPECIFIC TEACHER BY ID
+
+exports.getQuizzesByTeacherId = async (req, res) => {
+  try {
+    const teacherId = req.params.id;
+
+    const quizzes = await Quiz.find({ createdBy: teacherId });
+    res.send(quizzes);
+  } catch (error) {
+    throw error;
+  }
+}
 
 // READ - Get a specific quiz by ID
 exports.getQuizById = async (req, res) => {
@@ -70,7 +84,6 @@ exports.createQuizSubmission = async (req, res) => {
     const studentId = req.params.studentId;
     const quizSubmission = {
       student: studentId,
-      quiz: quizId,
       answers: req.body.answers,
     };
     const quiz = await Quiz.findByIdAndUpdate(
@@ -81,11 +94,34 @@ exports.createQuizSubmission = async (req, res) => {
     if (!quiz) {
       return res.status(404).send('Quiz not found');
     }
-    res.status(201).send(quizSubmission);
+
+    // find the quiz submission for the current student
+    const submission = quiz.submissions.find(
+      (s) => String(s.student) === studentId
+    );
+
+    // calculate the grade for the current submission
+    let totalScore = 0;
+    for (const answer of submission.answers) {
+      const question = await Question.findById(answer.question._id);
+      console.log(question.correctAnswer)
+      const correctAnswer = question.correctAnswer;
+      const score = answer.answer.toString() === correctAnswer.toString() ? 1 : 0;
+      totalScore += score;
+    }
+    const percentageScore = await (totalScore / quiz.questions.length) * 100;
+     submission.grade = percentageScore;
+
+    // save the updated quiz object to the database
+    await quiz.save();
+
+    res.status(201).send(submission);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };
+
 
 // READ - Get all quiz submissions for a specific quiz
 exports.getQuizSubmissionsByQuiz = async (req, res) => {

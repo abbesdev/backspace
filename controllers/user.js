@@ -3,6 +3,7 @@ const {Teacher} = require("../models/user");
 const {Student} = require("../models/user");
 const {Parent} = require("../models/user");
 const {Admin} = require("../models/user");
+const nodemailer = require("nodemailer");
 
 const createUser = async (req, res) => {
   try {
@@ -25,7 +26,34 @@ const createUser = async (req, res) => {
         user = new User(req.body);
         break;
     }
+// Generate 4-digit random code
+const otpCode = Math.floor(1000 + Math.random() * 9000);
+user.otp = otpCode.toString();
 
+      const transporter = nodemailer.createTransport({
+
+       
+        host: 'smtp.sendgrid.net',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'apikey',
+          pass: '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'
+        }
+      });
+    
+      const mailOptions = {
+        from: 'tmail1471@gmail.com',
+        to: user.email,
+        subject: 'Reset Your Password',
+        html: `This is your verification code :
+        <br/><br/>
+        ${otpCode.toString()}`
+      };
+    
+      await transporter.sendMail(mailOptions);
+      
+    
     const dataSave = await user.save();
     res.status(201).send(dataSave);
   } catch (err) {
@@ -37,6 +65,19 @@ const createUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
+    if (!users) {
+      return res.status(404).send();
+    }
+    res.send(users);
+  } catch (err) {
+    console.log(err)
+    res.status(500).send(err);
+  }
+};
+
+const getAllStudents = async (req, res) => {
+  try {
+    const users = await Student.find();
     if (!users) {
       return res.status(404).send();
     }
@@ -61,7 +102,51 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const user = await User.findByIdAndUpdate(req.params.id,
+      req.body , // set verified attribute to true
+     { new: true } )// return the updated document);
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+const updateStudent = async (req, res) => {
+  try {
+    const user = await Student.findByIdAndUpdate(req.params.id,
+      req.body , // set verified attribute to true
+     { new: true } )// return the updated document);
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+const updateTeacher = async (req, res) => {
+  try {
+    const user = await Teacher.findByIdAndUpdate(req.params.id,
+      req.body , // set verified attribute to true
+     { new: true } )// return the updated document);
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+};
+
+const updateParent = async (req, res) => {
+  try {
+    const user = await Parent.findByIdAndUpdate(req.params.id,
+      req.body , // set verified attribute to true
+     { new: true } )// return the updated document);
     if (!user) {
       return res.status(404).send();
     }
@@ -83,10 +168,52 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || user.password !== password) {
+      return res.status(401).send({ message: "Invalid email or password" });
+    }
+
+    res.send(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+const updateUserverfication = async (req, res) => {
+  try {
+    const userId = req.params.id; // get user id from request params
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+       req.body , // set verified attribute to true
+      { new: true } // return the updated document
+    );
+
+    res.status(200).send(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+};
+
+
 module.exports = {
   getAllUsers,
+  getAllStudents,
+  updateStudent,
+  updateTeacher,
+  updateParent,
+  updateUserverfication,
     createUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    login
   };

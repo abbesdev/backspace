@@ -14,10 +14,6 @@ const timetableSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  timeDuration: {
-    type: Number,
-    required: true
-  },
   subject: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subject',

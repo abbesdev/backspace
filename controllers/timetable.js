@@ -1,6 +1,7 @@
 // Import the required models
 const Timetable = require('../models/timetable');
 const Subject = require('../models/subject');
+const Class = require('../models/class')
 
 // CREATE - Create a new timetable entry
 exports.createTimetable = async (req, res) => {

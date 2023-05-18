@@ -31,6 +31,32 @@ exports.getExamsByClass = async (req, res) => {
     res.status(500).send(error);
   }
 };
+// READ - Get an event record by ID
+exports.getExamById = async (req, res) => {
+  try {
+    const examId = req.params.examId;
+    const exam = await Exam.findById(examId);
+    if (!exam) {
+      return res.status(404).send('Exam not found');
+    }
+    res.send(exam);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+//GET ALL Exams FOR A SPECIFIC TEACHER BY ID
+
+exports.getExamsByTeacherId = async (req, res) => {
+  try {
+    const teacherId = req.params.id;
+
+    const exams = await Exam.find({ createdBy: teacherId });
+    res.send(exams);
+  } catch (error) {
+    throw error;
+  }
+}
 
 // UPDATE - Update an existing exam record
 exports.updateExam = async (req, res) => {

@@ -22,6 +22,17 @@ exports.getClasses = async (req, res) => {
   }
 };
 
+exports.getClassesByT = async (req, res) => {
+  const teacherId = req.params.teacherId;
+
+  try {
+    const classes = await Class.find({ teachers: teacherId });
+    res.send(classes);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 // READ - Get a specific class by ID
 exports.getClassById = async (req, res) => {
   try {

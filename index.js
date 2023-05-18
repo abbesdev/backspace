@@ -17,6 +17,7 @@ const quizRouter = require('./routes/quiz.js');
 const questionRouter = require('./routes/question.js');
 const subjectRouter = require('./routes/subject.js');
 const timetableRouter = require('./routes/timetable.js');
+const chatRouter = require('./routes/chat.js');
 
 
 
@@ -70,3 +71,4 @@ app.use(quizRouter);
 app.use(questionRouter);
 app.use(subjectRouter);
 app.use(timetableRouter);
+app.use(chatRouter);
