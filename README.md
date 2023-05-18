@@ -1,17 +1,15 @@
-# Project Name
+# School space App API
 
-[Project Description]
+
 
 ## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Features](#features)
 - [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
 - [API Documentation](#api-documentation)
 - [Deployment](#deployment)
 - [Built With](#built-with)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
