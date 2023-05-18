@@ -16,5 +16,5 @@ router.get('/quiz/:quizId', quizController.getQuizSubmissionsByQuiz);
 router.get('/quizbystudent/:studentId', quizController.getQuizSubmissionsByStudent);
 
 router.get('/questionsbyquiz/:quizId', quizController.getQuestionsByQuiz);
-
+router.get('/quiz/class/:classId',quizController.getQuizByClass);
 module.exports = router;

@@ -49,6 +49,20 @@ exports.getQuizById = async (req, res) => {
   }
 };
 
+// READ - Get a specific quiz by ID
+exports.getQuizByClass = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const quiz = await Quiz.findById({ class: classId });
+    if (!quiz) {
+      return res.status(404).send('Quiz not found');
+    }
+    res.send(quiz);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 // UPDATE - Update an existing quiz
 exports.updateQuiz = async (req, res) => {
   try {
