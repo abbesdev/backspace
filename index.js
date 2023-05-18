@@ -1,6 +1,7 @@
 
 //IMPORTS
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const express = require("express");
 const cors = require("cors");
 const { HOST, DB } = require("./config/db");
@@ -28,7 +29,24 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
+// Swagger definition options
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'My API',
+      version: '1.0.0',
+    },
+  },
+  // Provide the path to your route files or directories containing route files
+  apis: ['swagger.js'],
+};
 
+// Initialize swagger-jsdoc
+const specs = swaggerJsdoc(options);
+
+// Serve the Swagger UI at '/api-docs'
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
