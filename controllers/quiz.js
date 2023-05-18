@@ -53,7 +53,7 @@ exports.getQuizById = async (req, res) => {
 exports.getQuizByClass = async (req, res) => {
   try {
     const classId = req.params.classId;
-    const quiz = await Quiz.findById({ class: classId });
+    const quiz = await Quiz.find({ class: classId });
     if (!quiz) {
       return res.status(404).send('Quiz not found');
     }
