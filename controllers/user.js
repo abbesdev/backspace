@@ -224,9 +224,23 @@ const getStudentById = async (req, res) => {
   catch (err) {
   }
 }
+const getUsersNumbers = async (req, res) => {
+  try {
+    const userCount = await User.count();
+    const parentCount = await User.count({ userRole: 'parent' });
+    const studentCount = await User.count({ userRole: 'student' });
+    const teacherCount = await User.count({ userRole: 'teacher' });
+    
+    const counts = [userCount, studentCount,parentCount,  teacherCount];
+    res.status(200).send({ counts });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
 
 
 module.exports = {
+  getUsersNumbers,
   getStudentById,
   getAllUsers,
   getAllStudents,
